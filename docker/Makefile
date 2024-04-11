@@ -47,6 +47,6 @@ delete:
 
 
 deploy:
-	@make save-logs env=test
-	@make build env=test
+	@make save-logs env=$$env
+	@make build env=$$env
 	@sh run.sh $$env
