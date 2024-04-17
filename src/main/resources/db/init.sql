@@ -1,6 +1,9 @@
 -- init.sql
+
 CREATE DATABASE IF NOT EXISTS database;
 USE database;
+
+
 
 CREATE TABLE IF NOT EXISTS member (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -10,4 +13,7 @@ CREATE TABLE IF NOT EXISTS member (
     password VARCHAR(255) NOT NULL
 );
 
+CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin';
+GRANT ALL PRIVILEGES ON db.* TO 'admin'@'%';
+FLUSH PRIVILEGES;
 
