@@ -18,6 +18,9 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder; // Autowired field instead of method call inside configureGlobal
+
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,7 +41,7 @@ public class SecurityConfig {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Bean
