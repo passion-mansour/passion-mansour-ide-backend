@@ -19,7 +19,7 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-       @PostMapping("/register")
+    @PostMapping("/register")
     public ResponseEntity<Member> register(@RequestBody Member member) {
         return ResponseEntity.ok(memberService.register(member));
     }
