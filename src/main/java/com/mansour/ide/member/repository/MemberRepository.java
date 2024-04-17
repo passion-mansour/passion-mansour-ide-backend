@@ -1,10 +1,14 @@
 package com.mansour.ide.member.repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.mansour.ide.member.model.Member;
@@ -26,8 +30,25 @@ public class MemberRepository {
     };
 
     public Member save(Member member) {
-        jdbcTemplate.update("INSERT INTO member (name, nickName, loginId, password) VALUES (?, ?, ?, ?)",
-                member.getName(), member.getNickName(), member.getLoginId(), member.getPassword());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO member (name, nickName, loginId, password) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, member.getName());
+            ps.setString(2, member.getNickName());
+            ps.setString(3, member.getLoginId());
+            ps.setString(4, member.getPassword());
+            return ps;
+        }, keyHolder);
+
+        Number key = keyHolder.getKey();
+        Long generatedId = (key != null) ? key.longValue() : null;
+        if (generatedId != null) {
+            member.setId(generatedId);
+        } else {
+            throw new RuntimeException("Failed to retrieve auto-generated ID");
+        }
+        member.setId(generatedId);
+
         return member; 
     }
 
