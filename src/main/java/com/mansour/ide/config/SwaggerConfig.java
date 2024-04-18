@@ -1,4 +1,4 @@
-package com.mansour.ide.common.config;
+package com.mansour.ide.config;
 
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
