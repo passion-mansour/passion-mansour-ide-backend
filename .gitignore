@@ -1,9 +1,0 @@
-# compiled output
-# env
-src/main/resources/application.properties
-
-
-# docker
-docker-compose-*
-
-
