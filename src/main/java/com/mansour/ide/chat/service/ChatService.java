@@ -3,6 +3,8 @@ package com.mansour.ide.chat.service;
 import com.mansour.ide.chat.model.ChatDto;
 import com.mansour.ide.chat.model.Messages;
 import com.mansour.ide.chat.repository.ChatRepository;
+import com.mansour.ide.chat.repository.ParticipantRepository;
+import com.mansour.ide.member.model.Member;
 import com.mansour.ide.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ public class ChatService {
 
     private final ChatRepository chatRepository;
     private final MemberRepository memberRepository;
+    private final ParticipantRepository participantRepository;
 
     public ChatDto saveMessage(ChatDto chatDto) {
         Messages messages = new Messages();
@@ -28,8 +31,12 @@ public class ChatService {
     }
 
     private ChatDto convertToDto(Messages messages) {
+
+        Long userId = participantRepository.findUserIdById(messages.getParticipantId());
+        Member findUser = memberRepository.findById(userId);
+
         ChatDto chatDto = new ChatDto();
-        // TODO: member findById 메서드 구현 후 유저 이름 가져오기
+        chatDto.setSender(findUser.getNickName());
         chatDto.setChatMessageId(messages.getMessageId());
         chatDto.setMessage(chatDto.getMessage());
         chatDto.setProjectId(messages.getProjectId());
