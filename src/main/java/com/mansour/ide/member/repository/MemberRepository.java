@@ -3,7 +3,9 @@ package com.mansour.ide.member.repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+
 import java.util.stream.Collectors;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -65,7 +67,6 @@ public class MemberRepository {
         }
         return members.get(0);
     }
-
     public Member findById(Long id) {
         String sql = "SELECT * FROM member WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, memberRowMapper, id);

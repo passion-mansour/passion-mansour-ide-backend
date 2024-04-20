@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -28,6 +27,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/websocket/**", "/api/**").permitAll() // WebSocket 및 API 경로에 대한 접근 허용
                 .anyRequest().authenticated() // 나머지 요청은 인증 필요
+
             )
             .formLogin(form -> form
                 .loginProcessingUrl("/login")
