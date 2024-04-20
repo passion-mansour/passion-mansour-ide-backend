@@ -27,7 +27,7 @@ public class ChatController {
         chatService.saveMessage(chatDto);
 
         Long projectId = chatDto.getProjectId();
-        String destination = "/topic/chat/" + projectId;
+        String destination = "/topic/chat/1" ;
 
         switch (chatDto.getMessageType()) {
             case JOIN:
@@ -60,4 +60,3 @@ public class ChatController {
         messagingTemplate.convertAndSend(destination, messageDto);
     }
 }
-

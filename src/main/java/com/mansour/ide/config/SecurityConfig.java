@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class SecurityConfig {
 
     @Autowired
@@ -24,10 +24,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Disabling CSRF, adjust according to your needs
+            .csrf(csrf -> csrf.disable()) // CSRF 보호 비활성화
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/websocket/**", "/api/**").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers("/websocket/**", "/api/**").permitAll() // WebSocket 및 API 경로에 대한 접근 허용
+                .anyRequest().authenticated() // 나머지 요청은 인증 필요
             )
             .formLogin(form -> form
                 .loginProcessingUrl("/login")
@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .permitAll()
             )
             .logout(logout -> logout.permitAll())
-            .httpBasic(withDefaults());;
+            .httpBasic(withDefaults()); // HTTP 기본 인증 활성화
         return http.build();
     }
 

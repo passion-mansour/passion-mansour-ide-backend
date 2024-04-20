@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-//@Component
+@Component
 public class JwtTokenUtil {
     private final String secret = "oyET2R4Mh7TV8FlYcSzcnucv5nh4TJnarWf0btpLZpN/CqGnyM/zhvONr2cpUrBeROlB/LtW8a9SYz2QfS22tw==";  // 비밀키 설정
 

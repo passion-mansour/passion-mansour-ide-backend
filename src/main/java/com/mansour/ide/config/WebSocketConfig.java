@@ -22,7 +22,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/websocket")
-            .setAllowedOrigins("http://localhost:*")
+            .setAllowedOrigins("http://localhost:3000")
             .withSockJS();
     }
 
@@ -32,7 +32,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                    .allowedOriginPatterns("http://localhost:*")  // 특정 패턴 사용
+                    .allowedOriginPatterns("http://localhost:3000")  // 특정 패턴 사용
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowCredentials(true)
                     .maxAge(3600);
