@@ -4,6 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
 
+import java.util.stream.Collectors;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -63,5 +66,19 @@ public class MemberRepository {
             return null; 
         }
         return members.get(0);
+    }
+    public Member findById(Long id) {
+        String sql = "SELECT * FROM member WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, memberRowMapper, id);
+    }
+
+    public List<Member> findMembersByIds(List<Long> userIds) {
+        // ID 목록을 SQL 쿼리 문자열로 변환
+        String inSql = userIds.stream()
+            .map(String::valueOf)
+            .collect(Collectors.joining(", "));
+        String sql = "SELECT * FROM member WHERE id IN (" + inSql + ")";
+
+        return jdbcTemplate.query(sql, memberRowMapper);
     }
 }
