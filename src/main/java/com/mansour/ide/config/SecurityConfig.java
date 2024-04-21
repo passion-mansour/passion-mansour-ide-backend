@@ -26,16 +26,22 @@ public class SecurityConfig {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    private AuthenticationManager authenticationManager;
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        return builder.build();
+    }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/websocket/**", "/api/**").permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager),
+                .authenticationManager(authManager)
+                .addFilterBefore(new JwtAuthenticationFilter(authManager, jwtTokenUtil),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtTokenVerificationFilter(jwtTokenUtil, userDetailsService),
                         UsernamePasswordAuthenticationFilter.class);

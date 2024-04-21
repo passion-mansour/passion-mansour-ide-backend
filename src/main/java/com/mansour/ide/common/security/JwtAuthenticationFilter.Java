@@ -21,13 +21,12 @@ import java.util.Map;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
     private AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
         this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
         setFilterProcessesUrl("/api/members/login"); // Define the login endpoint
     }
 
