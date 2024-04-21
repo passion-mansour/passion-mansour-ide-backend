@@ -14,7 +14,7 @@ import com.mansour.ide.member.model.Member;
 import com.mansour.ide.member.service.MemberService;
 
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/api/members")
 public class MemberController {
     @Autowired
     private MemberService memberService;

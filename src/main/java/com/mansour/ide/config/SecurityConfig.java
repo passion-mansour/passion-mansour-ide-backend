@@ -22,21 +22,21 @@ public class SecurityConfig {
     @Autowired
     private PasswordEncoder passwordEncoder; // Autowired field instead of method call inside configureGlobal
 
-    
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Disabling CSRF, adjust according to your needs
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/members/register").permitAll() // New method to replace antMatchers for permitAll
-                .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/home", true)
-                .permitAll()
-            )
-            .logout(logout -> logout.permitAll());
+                .csrf(csrf -> csrf.disable()) // Disabling CSRF, adjust according to your needs
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/websocket/**", "/api/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/home", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout.permitAll());
         return http.build();
     }
 
