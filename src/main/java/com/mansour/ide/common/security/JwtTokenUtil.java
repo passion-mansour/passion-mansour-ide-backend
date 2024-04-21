@@ -16,17 +16,13 @@ import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil {
-    private final String secret = "oyET2R4Mh7TV8FlYcSzcnucv5nh4TJnarWf0btpLZpN/CqGnyM/zhvONr2cpUrBeROlB/LtW8a9SYz2QfS22tw==";  // 비밀키 설정
+    private final byte[] secret = "oyET2R4Mh7TV8FlYcSzcnucv5nh4TJnarWf0btpLZpN/CqGnyM/zhvONr2cpUrBeROlB/LtW8a9SYz2QfS22tw=="
+            .getBytes();
     private long accessTokenValidity = 24 * 60 * 60 * 1000;
     private long refreshTokenValidity = 7 * 24 * 60 * 60 * 1000;
 
     private Key getKey() {
-        return new SecretKeySpec(secret.getBytes(), SignatureAlgorithm.HS256.getJcaName());
-    }
-
-    // 토큰에서 사용자 이름 추출
-    public String getUsernameFromToken(String token) {
-        return getAllClaimsFromToken(token).getSubject();
+        return new SecretKeySpec(secret, SignatureAlgorithm.HS256.getJcaName());
     }
 
     public String generateAccessToken(UserDetails userDetails) {
@@ -47,6 +43,11 @@ public class JwtTokenUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + validity))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    // 토큰에서 사용자 이름 추출
+    public String getUsernameFromToken(String token) {
+        return getAllClaimsFromToken(token).getSubject();
     }
 
     // 토큰 유효성 검증
