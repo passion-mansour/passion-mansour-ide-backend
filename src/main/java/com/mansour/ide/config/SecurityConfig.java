@@ -26,7 +26,6 @@ public class SecurityConfig {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Bean
@@ -53,4 +52,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
