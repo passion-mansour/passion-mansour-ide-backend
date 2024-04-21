@@ -11,9 +11,9 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Table(name = "FILE")
 public class File {
     @Id
@@ -24,9 +24,4 @@ public class File {
     private String language;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
-
-    public File(String content, String language) {
-        this.content = content;
-        this.language = language;
-    }
 }

@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +29,8 @@ public class FileRepositoryImpl implements FileRepository{
             file.setName(rs.getString("name"));
             file.setContent(rs.getString("content"));
             file.setLanguage(rs.getString("language"));
-            file.setCreateDateTime((LocalDateTime) rs.getObject("create_dt"));
-            file.setUpdateDateTime((LocalDateTime) rs.getObject("update_dt"));
+            file.setCreateDateTime(rs.getTimestamp("createDt").toLocalDateTime());
+            file.setUpdateDateTime(rs.getTimestamp("updateDt").toLocalDateTime());
 
             return file;
         });
@@ -46,8 +45,8 @@ public class FileRepositoryImpl implements FileRepository{
         params.put("name", file.getName());
         params.put("content", file.getContent());
         params.put("language", file.getLanguage());
-        params.put("create_dt", file.getCreateDateTime());
-        params.put("update_dt", file.getUpdateDateTime());
+        params.put("createDt", file.getCreateDateTime());
+        params.put("updateDt", file.getUpdateDateTime());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
         file.setId(key.longValue());
@@ -57,18 +56,8 @@ public class FileRepositoryImpl implements FileRepository{
 
     @Override
     public File update(File file) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("file").usingGeneratedKeyColumns("id");
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", file.getName());
-        params.put("content", file.getContent());
-        params.put("language", file.getLanguage());
-        params.put("create_dt", file.getCreateDateTime());
-        params.put("update_dt", file.getUpdateDateTime());
-
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
-        file.setId(key.longValue());
+        String sql = "UPDATE file SET language = ?, content = ?, updateDt = ?" + "WHERE id = ?";
+        jdbcTemplate.update(sql, file.getLanguage(), file.getContent(), file.getUpdateDateTime(), file.getId());
 
         return file;
     }
@@ -83,7 +72,6 @@ public class FileRepositoryImpl implements FileRepository{
         List<File> result = jdbcTemplate.query("SELECT * FROM file WHERE id = ?", fileRowMapper(), id);
         return result.stream().findAny(); // findAny하면 Optional로 반환되서 이렇게 사용하면 좋다.
     }
-
     @Override
     public Optional<File> getFileByName(String name) {
         List<File> result = jdbcTemplate.query("SELECT * FROM file WHERE name = ?", fileRowMapper(), name);
