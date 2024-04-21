@@ -1,8 +1,8 @@
 -- init.sql
 
 
-CREATE DATABASE IF NOT EXISTS `database`;
-USE `database`;
+CREATE DATABASE IF NOT EXISTS database;
+USE database;
 
 
 -- Projects 테이블 생성
@@ -46,6 +46,6 @@ CREATE TABLE IF NOT EXISTS messages (
 
 
 CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin';
-GRANT ALL PRIVILEGES ON `database`.* TO 'admin'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON db.* TO 'admin'@'%';
 FLUSH PRIVILEGES;
 
