@@ -3,8 +3,8 @@ package com.mansour.ide.member.service;
 import com.mansour.ide.member.model.Member;
 import com.mansour.ide.member.repository.MemberRepository;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,10 +13,10 @@ public class MemberService {
     private MemberRepository memberRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     public Member register(Member member) {
-        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
         return memberRepository.save(member);
     }
 
