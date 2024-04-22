@@ -4,6 +4,7 @@ import com.mansour.ide.board.model.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+<<<<<<< HEAD
 @Data
 @AllArgsConstructor
 public class ProjectListResponse {
@@ -17,4 +18,12 @@ public class ProjectListResponse {
                 board.getTitle()
         );
     }
+=======
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+public class ProjectListResponse {
+    private List<Project> projects;
+>>>>>>> fca6a491da7e671a71d5b938a32b254b35235e58
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.mansour.ide.common.model;
 
 import jakarta.persistence.GeneratedValue;
@@ -21,3 +22,5 @@ public abstract class BaseEntity {
 
     // Getter and Setter
 }
+=======
+>>>>>>> fca6a491da7e671a71d5b938a32b254b35235e58
