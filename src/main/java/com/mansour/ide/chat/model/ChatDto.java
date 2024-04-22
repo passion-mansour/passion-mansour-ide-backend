@@ -16,10 +16,5 @@ public class ChatDto {
     private String message; // 메시지 내용
     private LocalDateTime createAt; // 보낸 시간
     private String sender; // 보낸 유저 닉네임
-    private MessageType messageType; // 메시지 타입
-
-    public enum MessageType {
-        JOIN, LEAVE, TALK
-    }
 
 }

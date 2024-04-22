@@ -8,13 +8,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Messages {
+public class Message {
 
-    private Long projectId;
     private Long MessageId;
+    private Long projectId;
     private Long participantId;
     private String message;
-    private LocalDateTime createAt;
-
+    private LocalDateTime createdAt;
 
 }

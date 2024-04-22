@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CodeSnippet {
-    private Long id;
+    private Long projectId;
     private String content;
 }
