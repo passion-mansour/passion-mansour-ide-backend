@@ -24,4 +24,13 @@ public class ChatController {
 
         return chatDto;
     }
+
+    @MessageMapping("/chat/join/{projectId}")
+    @SendTo("/topic/chat/{projectId}")
+    public String handleChatJoin(@DestinationVariable Long projectId, ChatDto chatDto) {
+        return chatDto.getSender() + "님이 입장하셨습니다.";
+    }
+
+//    @MessageMapping("/chat/leave/{projectId}")
+//    @SendTo("/topic/chat/{projectId}")
 }

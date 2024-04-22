@@ -7,5 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class CodeSnippet {
     private Long projectId;
-    private String content;
+    private String type;
+    private String fileContent;
 }
