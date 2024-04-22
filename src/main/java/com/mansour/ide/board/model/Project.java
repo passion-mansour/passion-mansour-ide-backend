@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Data
 @Builder

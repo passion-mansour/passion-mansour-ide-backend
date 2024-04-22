@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mansour.ide.member.dto.MemberDTO;
@@ -74,6 +75,18 @@ public class MemberController {
         memberService.deleteByLoginId(username);
         SecurityContextHolder.clearContext(); // logout the user
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<MemberTokensDTO> refreshAccessToken(@RequestParam String refreshToken) {
+        try {
+            MemberTokensDTO memberTokens = memberService.refreshAccessToken(refreshToken);
+            return ResponseEntity.ok(memberTokens);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            // or more appropriate status based on the
+            // error
+        }
     }
 
     @PostMapping("/logout")

@@ -3,9 +3,7 @@ package com.mansour.ide.board.dto;
 import com.mansour.ide.board.model.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
