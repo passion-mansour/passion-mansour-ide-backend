@@ -4,6 +4,7 @@ import com.mansour.ide.codeEditor.model.File;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -13,8 +14,8 @@ public class FileResponse {
     private String name;
     private String content;
     private String language;
-    private LocalDateTime createDateTime;
-    private LocalDateTime updateDateTime;
+    private Timestamp createDateTime;
+    private Timestamp updateDateTime;
 
     public static FileResponse from(File file){
         return new FileResponse(

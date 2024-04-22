@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,8 +23,8 @@ public class Project {
     private int maxUser;
     private Boolean isLock;
     private Boolean isEnd;
-    private LocalDateTime createDateTime;
-    private LocalDateTime endDateTime;
+    private Timestamp createDateTime;
+    private Timestamp endDateTime;
 
     private Long fileId;
 }

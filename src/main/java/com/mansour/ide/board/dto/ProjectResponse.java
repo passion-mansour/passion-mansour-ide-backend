@@ -4,6 +4,7 @@ import com.mansour.ide.board.model.Project;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,8 +17,8 @@ public class ProjectResponse {
     private int maxUser;
     private Boolean isLock;
     private Boolean isEnd;
-    private LocalDateTime createDateTime;
-    private LocalDateTime updateDateTime;
+    private Timestamp createDateTime;
+    private Timestamp updateDateTime;
 
     private Long fileId;
 

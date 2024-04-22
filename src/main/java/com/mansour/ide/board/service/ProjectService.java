@@ -8,7 +8,10 @@ import com.mansour.ide.board.repository.ProjectRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -19,6 +22,7 @@ public class ProjectService {
     private final ProjectRepositoryImpl projectRepository;
 
     // 프로젝트 생성
+    @Transactional
     public ProjectResponse create(ProjectPostRequest projectPostRequest){
         Project project = Project.builder()
                 .hostId(projectPostRequest.getHostId())
@@ -28,8 +32,7 @@ public class ProjectService {
                 .maxUser(projectPostRequest.getMaxUser())
                 .isLock(projectPostRequest.getIsLock())
                 .isEnd(false)
-                .createDateTime(LocalDateTime.now())
-                .endDateTime(LocalDateTime.MIN)
+                .createDateTime(Timestamp.from(Instant.now()))
                 .build();
 
         return ProjectResponse.from(projectRepository.save(project));
@@ -51,6 +54,7 @@ public class ProjectService {
     }
 
     // update
+    @Transactional
     public ProjectResponse updateFileId(Long id, Long fileId){
         Optional<Project> project = projectRepository.getById(id);
         if(project.isEmpty()){
@@ -60,6 +64,7 @@ public class ProjectService {
         return ProjectResponse.from(projectRepository.updateFileId(project.get(), fileId));
     }
 
+    @Transactional
     public ProjectResponse updateEndStatus(Long id, boolean endStatus){
         Optional<Project> project = projectRepository.getById(id);
         if(project.isEmpty()){

@@ -8,7 +8,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+
 
 @Data
 @Builder
@@ -22,6 +24,7 @@ public class File {
     private String name;
     private String content;
     private String language;
-    private LocalDateTime createDateTime;
-    private LocalDateTime updateDateTime;
+    private Timestamp createDateTime;
+    private Timestamp updateDateTime;
+
 }
