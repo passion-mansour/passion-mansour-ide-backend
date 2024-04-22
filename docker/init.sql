@@ -5,6 +5,10 @@ USE db;
 -- Create the admin user before granting privileges
 CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin';
 
+-- Grant privileges to the admin user
+GRANT ALL PRIVILEGES ON db.* TO 'admin'@'%';
+FLUSH PRIVILEGES;
+
 -- Projects 테이블 생성
 CREATE TABLE IF NOT EXISTS member (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -57,6 +61,4 @@ CREATE TABLE IF NOT EXISTS file (
     updated_at TIMESTAMP
 );
 
--- Grant privileges to the admin user
-GRANT ALL PRIVILEGES ON db.* TO 'admin'@'%';
-FLUSH PRIVILEGES;
+

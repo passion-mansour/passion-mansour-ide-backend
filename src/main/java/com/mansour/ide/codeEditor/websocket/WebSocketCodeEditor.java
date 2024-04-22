@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class WebSocketCodeEditor {
 
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("code/change/{projectId}")
-    @SendTo("/topic/code/{projectId}")
     public CodeSnippet handleCodeChange(@DestinationVariable Long projectId, CodeSnippet codeSnippet) throws Exception{
 
-        log.info("Handling code for project ID: {}", projectId);
+        log.info("Handling code for project ID: {}, fileContent: {}", projectId, codeSnippet.getFileContent());
 
+        simpMessagingTemplate.convertAndSend("/topic/code" + projectId, codeSnippet);
         return codeSnippet;
     }
 
