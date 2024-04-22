@@ -14,29 +14,6 @@ CREATE TABLE IF NOT EXISTS member (
     password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS participant (
-    participant_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    project_id BIGINT,
-    user_id BIGINT,
-    permission BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (project_id) REFERENCES project(project_id),
-    FOREIGN KEY (user_id) REFERENCES member(id)
-);
-
-CREATE TABLE IF NOT EXISTS message (
-    message_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    project_id BIGINT,
-    participant_id BIGINT,
-    message VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (project_id) REFERENCES project(project_id) ON DELETE CASCADE,
-    FOREIGN KEY (participant_id) REFERENCES participant(participant_id)
-);
-
-CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin';
-GRANT ALL PRIVILEGES ON db.* TO 'admin'@'%';
-FLUSH PRIVILEGES;
-
 CREATE TABLE IF NOT EXISTS project (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     hostId BIGINT,
@@ -59,3 +36,26 @@ CREATE TABLE IF NOT EXISTS file (
     createDt TIMESTAMP,
     updateDt TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS participant (
+    participantId BIGINT AUTO_INCREMENT PRIMARY KEY,
+    projectId BIGINT,
+    userId BIGINT,
+    permission BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (projectId) REFERENCES project(projectId),
+    FOREIGN KEY (userId) REFERENCES member(id)
+);
+
+CREATE TABLE IF NOT EXISTS message (
+    messageId BIGINT AUTO_INCREMENT PRIMARY KEY,
+    projectId BIGINT,
+    participantId BIGINT,
+    message VARCHAR(255),
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (projectId) REFERENCES project(projectId) ON DELETE CASCADE,
+    FOREIGN KEY (participantId) REFERENCES participant(participantId)
+);
+
+CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin';
+GRANT ALL PRIVILEGES ON db.* TO 'admin'@'%';
+FLUSH PRIVILEGES;
