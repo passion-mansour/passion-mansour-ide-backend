@@ -27,6 +27,17 @@ public class MemberService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private MemberDTO convertToMemberDTO(Member member) {
+        if (member == null) {
+            return null; // or throw an exception, based on your design decision
+        }
+        return new MemberDTO(
+                member.getId(),
+                member.getName(),
+                member.getNickName(),
+                member.getLoginId());
+    }
+
     public MemberTokensDTO register(Member member) {
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         Member savedMember = memberRepository.save(member);
@@ -41,6 +52,25 @@ public class MemberService {
         final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
 
         return new MemberTokensDTO(memberDTO, accessToken, refreshToken);
+    }
+
+    public MemberTokensDTO refreshAccessToken(String refreshToken) throws Exception {
+        if (!jwtTokenUtil.validateRefreshToken(refreshToken)) {
+            throw new Exception("Invalid refresh token.");
+        }
+
+        String loginId = jwtTokenUtil.getUsernameFromToken(refreshToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(loginId);
+        Member member = memberRepository.findByLoginId(loginId);
+        if (member == null) {
+            throw new Exception("Member not found");
+        }
+
+        MemberDTO memberDTO = convertToMemberDTO(member);
+
+        String newAccessToken = jwtTokenUtil.generateAccessToken(userDetails);
+
+        return new MemberTokensDTO(memberDTO, newAccessToken, refreshToken);
     }
 
     public void deleteByLoginId(String loginId) {
