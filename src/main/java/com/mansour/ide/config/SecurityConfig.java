@@ -23,7 +23,6 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
-
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
