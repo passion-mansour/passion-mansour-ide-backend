@@ -1,14 +1,5 @@
 package com.mansour.ide.board.service;
 
-<<<<<<< HEAD
-import com.mansour.ide.board.model.Project;
-import com.mansour.ide.board.repository.BoardRepositoryImpl;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-=======
 import com.mansour.ide.board.dto.ProjectListResponse;
 import com.mansour.ide.board.dto.ProjectPostRequest;
 import com.mansour.ide.board.dto.ProjectResponse;
@@ -21,27 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Optional;
->>>>>>> fca6a491da7e671a71d5b938a32b254b35235e58
 
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
-<<<<<<< HEAD
-    private final BoardRepositoryImpl projectRepository;
-    private final List<Project> board = new ArrayList<>();
-
-    // 프로젝트 생성
-    // 폴더와 파일 각각 하나씩 생성
-    // 호스트 임명
-
-
-    // 프로젝트 입장
-
-
-    // 프로젝트 퇴장
-=======
     @Autowired
     private final ProjectRepositoryImpl projectRepository;
 
@@ -97,5 +72,4 @@ public class ProjectService {
 
         return ProjectResponse.from(projectRepository.updateEndStatus(project.get(), endStatus));
     }
->>>>>>> fca6a491da7e671a71d5b938a32b254b35235e58
 }
