@@ -8,11 +8,14 @@ COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 
+
+
 RUN ./gradlew build -x test
 
 FROM openjdk:17-slim
 VOLUME /tmp
 COPY --from=build /workspace/app/build/libs/*.jar app.jar
+
 
 
 ENTRYPOINT ["java","-jar","/app.jar"]

@@ -1,0 +1,9 @@
+namespace: krampoline
+resources:
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  - mysql-secret.yaml
+  - mysql-init-configmap.yaml
+  - mysql-statefulset.yaml
+  - mysql-service.yaml

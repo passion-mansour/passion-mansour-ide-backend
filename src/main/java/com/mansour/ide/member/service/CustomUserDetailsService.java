@@ -1,6 +1,5 @@
 package com.mansour.ide.member.service;
 
-
 import com.mansour.ide.member.model.Member;
 import com.mansour.ide.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +29,3 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .build();
     }
 }
-
