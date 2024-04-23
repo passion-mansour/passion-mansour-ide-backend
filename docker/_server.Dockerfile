@@ -17,7 +17,7 @@ FROM openjdk:17-slim
 VOLUME /tmp
 
 # Copy the specific JAR file to the root directory and name it app.jar
-COPY --from=build /workspace/app/build/libs/app.jar /app.jar
+COPY --from=build /workspace/app/build/libs/*-SNAPSHOT.jar /app.jar
 
 
 
