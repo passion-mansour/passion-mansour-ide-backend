@@ -11,11 +11,14 @@ java {
 	sourceCompatibility = '17'
 }
 
+springBoot {
+    mainClassName = 'com.mansour.ide.IdeApplication'
+}
+
 bootJar {
     archiveBaseName.set("app")
     archiveVersion.set("")
     archiveClassifier.set("")
-    mainClassName = 'com.mansour.ide.IdeApplication'
 }
 
 
