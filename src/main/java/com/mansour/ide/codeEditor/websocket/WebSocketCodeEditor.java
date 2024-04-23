@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,13 +17,14 @@ public class WebSocketCodeEditor {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("code/change/{projectId}")
-    public CodeSnippet handleCodeChange(@DestinationVariable Long projectId, CodeSnippet codeSnippet) throws Exception{
+    @MessageMapping("/code/change/{projectId}")
+    public void handleCodeChange(@DestinationVariable Long projectId, CodeSnippet codeSnippet) throws Exception{
 
         log.info("Handling code for project ID: {}, fileContent: {}", projectId, codeSnippet.getFileContent());
 
-        simpMessagingTemplate.convertAndSend("/topic/code" + projectId, codeSnippet);
-        return codeSnippet;
+        simpMessagingTemplate.convertAndSend("/topic/code/1", codeSnippet);
+
+        log.info("send {}", codeSnippet);
     }
 
     @MessageExceptionHandler
