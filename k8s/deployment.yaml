@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: passion-mansour-ide-backend
-          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_2e3c87258e04
+          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_7e1b52dfb1c6
           ports:
             - containerPort: 8080
 ---
