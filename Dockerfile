@@ -15,7 +15,7 @@ RUN ./gradlew build -x test
 
 FROM openjdk:17-slim
 VOLUME /tmp
-COPY --from=build /app/build/libs/*.jar /app.jar
+COPY --from=build /app/build/libs/app.jar /app.jar
 
 
 
