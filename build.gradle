@@ -15,7 +15,14 @@ jar {
     archiveBaseName.set("app")
     archiveVersion.set("")
     archiveClassifier.set("")
+	manifest {
+        attributes(
+            'Main-Class': 'com.example.MainClass'
+        )
+    }
 }
+
+
 
 configurations {
 	compileOnly {
