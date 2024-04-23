@@ -12,10 +12,12 @@ RUN chmod +x gradlew
 
 RUN ./gradlew build -x test
 
+# List output to verify
+RUN ls /app/build/libs/
 
 FROM openjdk:17-slim
 VOLUME /tmp
-COPY --from=build /app/build/libs/app.jar /app.jar
+COPY --from=build /app/build/libs/*.jar app.jar
 
 
 
