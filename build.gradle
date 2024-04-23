@@ -11,8 +11,8 @@ java {
 	sourceCompatibility = '17'
 }
 
-springBoot {
-    mainClassName = 'com.mansour.ide.IdeApplication'
+application {
+    mainClass = 'com.mansour.ide.IdeApplication'
 }
 
 bootJar {
