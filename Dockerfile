@@ -10,7 +10,7 @@ COPY settings.gradle .
 COPY src src
 
 # Build the application, skipping tests
-RUN ./gradlew build -x test
+RUN ./gradlew build -x test --info
 
 # Use OpenJDK 17 Slim for the runtime image
 FROM openjdk:17-slim
