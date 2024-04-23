@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.mansour.ide.common.security.JwtAuthFilter;
+import com.mansour.ide.common.filters.JwtAuthenticationFilter;
 import com.mansour.ide.common.security.JwtTokenUtil;
 import com.mansour.ide.common.security.JwtTokenVerificationFilter;
 import com.mansour.ide.member.service.CustomUserDetailsService;
@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/websocket/**", "/api/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationManager(authManager)
-                .addFilterBefore(new JwtAuthFilter(authManager, jwtTokenUtil),
+                .addFilterBefore(new JwtAuthenticationFilter(authManager, jwtTokenUtil),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtTokenVerificationFilter(jwtTokenUtil, userDetailsService),
                         UsernamePasswordAuthenticationFilter.class);
