@@ -11,7 +11,7 @@ COPY src src
 
 
 
-RUN ./gradlew build -x test && ls /workspace/app/build/libs/
+RUN ./gradlew clean bootJar
 
 FROM openjdk:17-slim
 VOLUME /tmp

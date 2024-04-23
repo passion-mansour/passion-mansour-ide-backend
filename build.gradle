@@ -11,18 +11,12 @@ java {
 	sourceCompatibility = '17'
 }
 
-jar {
+bootJar {
+    mainClassName = 'com.mansour.ide.IdeApplication'
     archiveBaseName.set("app")
     archiveVersion.set("")
     archiveClassifier.set("")
-	manifest {
-        attributes(
-            'Main-Class': 'com.mansour.ide.IdeApplication'
-        )
-    }
 }
-
-
 
 configurations {
 	compileOnly {
