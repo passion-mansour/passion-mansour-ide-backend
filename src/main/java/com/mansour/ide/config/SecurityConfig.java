@@ -1,9 +1,5 @@
 package com.mansour.ide.config;
 
-import com.mansour.ide.common.security.JwtAuthenticationFilter;
-import com.mansour.ide.common.security.JwtTokenUtil;
-import com.mansour.ide.common.security.JwtTokenVerificationFilter;
-import com.mansour.ide.member.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +11,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.mansour.ide.common.security.JwtAuthFilter;
+import com.mansour.ide.common.security.JwtTokenUtil;
+import com.mansour.ide.common.security.JwtTokenVerificationFilter;
+import com.mansour.ide.member.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -41,7 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/websocket/**", "/api/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationManager(authManager)
-                .addFilterBefore(new JwtAuthenticationFilter(authManager, jwtTokenUtil),
+                .addFilterBefore(new JwtAuthFilter(authManager, jwtTokenUtil),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtTokenVerificationFilter(jwtTokenUtil, userDetailsService),
                         UsernamePasswordAuthenticationFilter.class);

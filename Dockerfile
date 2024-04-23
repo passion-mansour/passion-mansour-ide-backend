@@ -12,6 +12,8 @@ RUN chmod +x gradlew
 
 RUN ./gradlew build -x test
 
+RUN ls -la /app/src/main/java/com/mansour/ide/common/security/
+
 FROM openjdk:17-slim
 VOLUME /tmp
 COPY --from=build /app/build/libs/*.jar app.jar

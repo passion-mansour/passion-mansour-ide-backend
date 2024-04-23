@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtAuthFilter extends UsernamePasswordAuthenticationFilter {
     //
     private JwtTokenUtil jwtTokenUtil;
     private AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
+    public JwtAuthFilter(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         setFilterProcessesUrl("/api/members/login"); // Define the login endpoint
