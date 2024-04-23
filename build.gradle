@@ -11,10 +11,11 @@ java {
 	sourceCompatibility = '17'
 }
 
-jar {
+bootJar {
     archiveBaseName.set("app")
     archiveVersion.set("")
     archiveClassifier.set("")
+    mainClassName = 'com.mansour.ide.IdeApplication'
 }
 
 
