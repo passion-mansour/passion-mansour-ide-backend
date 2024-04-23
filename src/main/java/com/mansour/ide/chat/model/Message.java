@@ -12,7 +12,7 @@ public class Message {
 
     private Long MessageId;
     private Long projectId;
-    private Long participantId;
+    private Long userId;
     private String message;
     private LocalDateTime createdAt;
 

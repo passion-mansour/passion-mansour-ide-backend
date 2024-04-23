@@ -71,14 +71,4 @@ public class MemberRepository {
         String sql = "SELECT * FROM member WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, memberRowMapper, id);
     }
-
-    public List<Member> findMembersByIds(List<Long> userIds) {
-        // ID 목록을 SQL 쿼리 문자열로 변환
-        String inSql = userIds.stream()
-            .map(String::valueOf)
-            .collect(Collectors.joining(", "));
-        String sql = "SELECT * FROM member WHERE id IN (" + inSql + ")";
-
-        return jdbcTemplate.query(sql, memberRowMapper);
-    }
 }
