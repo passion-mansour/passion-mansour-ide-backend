@@ -10,11 +10,15 @@ COPY src src
 
 
 
-RUN ./gradlew build -x test
+
+RUN ./gradlew build -x test && ls /workspace/app/build/libs/
 
 FROM openjdk:17-slim
 VOLUME /tmp
-COPY --from=build /workspace/app/build/libs/*.jar app.jar
+
+
+COPY --from=build /workspace/app/build/libs/app.jar /app.jar
+
 
 
 
