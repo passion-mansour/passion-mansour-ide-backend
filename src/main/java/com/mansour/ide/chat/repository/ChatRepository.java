@@ -26,14 +26,14 @@ public class ChatRepository {
     }
 
     public Message save(Message message) {
-        final String sql = "INSERT INTO message (project_id, participant_id, message, created_at) " +
-            "VALUES (:projectId, :participantId, :message, :createdAt)";
+        final String sql = "INSERT INTO message (projectId, userId, message, createdAt) " +
+            "VALUES (:projectId, :userId, :message, :createdAt)";
 
         MapSqlParameterSource parameter = new MapSqlParameterSource()
             .addValue("projectId", message.getProjectId())
-            .addValue("participantId", message.getParticipantId())
+            .addValue("userId", message.getUserId())
             .addValue("message", message.getMessage())
-            .addValue("createdAt", Timestamp.valueOf(LocalDateTime.now()));
+            .addValue("createdAt", message.getCreatedAt());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         template.update(sql, parameter, keyHolder);
