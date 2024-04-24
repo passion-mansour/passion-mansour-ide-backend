@@ -31,7 +31,7 @@ public class FileResponse {
     @Override
     public String toString() {
         return "FileResponse{" +
-                ", content='" + content + '\'' +
+                "content='" + content + '\'' +
                 ", language='" + language + '\'' +
                 '}';
     }

@@ -8,14 +8,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RabbitMqProducer {
-    @Value("${rabbitmq.queue.name}")
-    private String QUEUE_NAME;
-
-    @Value("${rabbitmq.exchange.name}")
-    private String EXCHANGE_NAME;
-
-    @Value("${rabbitmq.routing.key}")
-    private String ROUTING_KEY;
 
     @Autowired
     private AmqpTemplate rabbitTemplate;

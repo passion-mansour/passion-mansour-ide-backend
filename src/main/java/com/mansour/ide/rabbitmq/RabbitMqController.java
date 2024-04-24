@@ -21,9 +21,6 @@ public class RabbitMqController {
     @PostMapping("/send/message")
     public ResponseEntity<String> sendMessage(@RequestBody FileResponse fileResponse) {
         try {
-            log.info(fileResponse.toString());
-            log.info("메세지 전송 시작");
-
             this.rabbitMqService.sendMessage(fileResponse);
             return ResponseEntity.ok("Message sent to RabbitMQ");
         } catch (Exception e) {
