@@ -10,6 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -22,10 +26,14 @@ public class ChatService {
     @Transactional
     public ChatDto saveMessage(Long projectId, ChatDto chatDto) {
 
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(chatDto.getTimestamp(), DateTimeFormatter.ISO_DATE_TIME);
+        LocalDateTime localDateTime = zonedDateTime.withZoneSameInstant(ZonedDateTime.now().getZone()).toLocalDateTime();
+
         Message message = new Message();
         message.setProjectId(projectId);
+        message.setUserId(chatDto.getUserId());
         message.setMessage(chatDto.getMessage());
-        message.setCreatedAt(chatDto.getCreateAt());
+        message.setCreatedAt(localDateTime);
 
         Message saved = chatRepository.save(message);
 
@@ -41,7 +49,8 @@ public class ChatService {
         chatDto.setChatMessageId(message.getMessageId());
         chatDto.setMessage(chatDto.getMessage());
         chatDto.setProjectId(message.getProjectId());
-        chatDto.setCreateAt(message.getCreatedAt());
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        chatDto.setTimestamp(message.getCreatedAt().format(formatter));
 
         return chatDto;
     }
