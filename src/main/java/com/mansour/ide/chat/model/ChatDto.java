@@ -19,7 +19,7 @@ public class ChatDto {
     @JsonIgnore
     private String message; // 메시지 내용
     @JsonIgnore
-    private LocalDateTime createAt; // 보낸 시간
+    private String timestamp; // 보낸 시간
     @JsonIgnore
     private String sender; // 보낸 유저 닉네임
     @JsonIgnore

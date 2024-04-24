@@ -22,17 +22,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/websocket")
-            .setAllowedOrigins("http://localhost:3000")
+            .setAllowedOrigins("http://localhost:3000",
+                "https://k314603b94e3fa.user-app.krampoline.com")
             .withSockJS();
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
+    public WebMvcConfigurer corsConfigure() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                    .allowedOriginPatterns("http://localhost:3000")  // 특정 패턴 사용
+                    .allowedOriginPatterns("http://localhost:3000",
+                        "https://k314603b94e3fa.user-app.krampoline.com")  // 특정 패턴 사용
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowCredentials(true)
                     .maxAge(3600);
