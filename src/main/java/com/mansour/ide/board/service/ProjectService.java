@@ -5,6 +5,8 @@ import com.mansour.ide.board.dto.ProjectPostRequest;
 import com.mansour.ide.board.dto.ProjectResponse;
 import com.mansour.ide.board.model.Project;
 import com.mansour.ide.board.repository.ProjectRepositoryImpl;
+import com.mansour.ide.member.dto.MemberDTO;
+import com.mansour.ide.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.util.Optional;
 public class ProjectService {
     @Autowired
     private final ProjectRepositoryImpl projectRepository;
+    @Autowired
+    private final MemberService memberService;
 
     // 프로젝트 생성
     @Transactional
@@ -34,7 +38,8 @@ public class ProjectService {
                 .createDateTime(Timestamp.from(Instant.now()))
                 .build();
 
-        return ProjectResponse.from(projectRepository.save(project));
+        MemberDTO host = memberService.findMemberDetailsById(projectPostRequest.getHostId());
+        return ProjectResponse.from(projectRepository.save(project), host);
     }
 
     // 프로젝트 조회
@@ -44,7 +49,8 @@ public class ProjectService {
         if(project.isEmpty()){
             throw new IllegalArgumentException("Project info is not found!");
         }
-        return ProjectResponse.from(project.get());
+        MemberDTO host = memberService.findMemberDetailsById(project.get().getHostId());
+        return ProjectResponse.from(project.get(), host);
     }
 
     // 종료 여부에 따른 프로젝트 List 조회
@@ -54,13 +60,14 @@ public class ProjectService {
 
     // update
     @Transactional
-    public ProjectResponse updateFileId(Long id, Long fileId){
+    public void updateFileId(Long id, Long fileId){
         Optional<Project> project = projectRepository.getById(id);
         if(project.isEmpty()){
             throw new IllegalArgumentException("File info is not found!");
         }
 
-        return ProjectResponse.from(projectRepository.updateFileId(project.get(), fileId));
+        MemberDTO host = memberService.findMemberDetailsById(project.get().getHostId());
+        ProjectResponse.from(projectRepository.updateFileId(project.get(), fileId), host);
     }
 
     @Transactional
@@ -70,6 +77,7 @@ public class ProjectService {
             throw new IllegalArgumentException("File info is not found!");
         }
 
-        return ProjectResponse.from(projectRepository.updateEndStatus(project.get(), endStatus));
+        MemberDTO host = memberService.findMemberDetailsById(project.get().getHostId());
+        return ProjectResponse.from(projectRepository.updateEndStatus(project.get(), endStatus), host);
     }
 }
