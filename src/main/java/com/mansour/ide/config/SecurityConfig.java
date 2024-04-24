@@ -39,9 +39,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api-docs/**").permitAll()
-                    .requestMatchers("/api/authenticate").permitAll()
-                    .requestMatchers("/websocket/**", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**").permitAll()
+                    .requestMatchers("/websocket/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/**", "/webjars/**", "/api/**").permitAll()
                     .anyRequest().authenticated())
                 .authenticationManager(authManager)
                 .addFilterBefore(new JwtAuthenticationFilter(authManager, jwtTokenUtil),
