@@ -28,6 +28,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+	// RabbitMQ를 위한 의존성 추가
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+
+	// 네카라쿠배를 위한 의존성 추가
+	implementation 'io.fabric8:kubernetes-client:6.9.2'
+
+	// jwt를 위한 위존성 추가
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2', 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
