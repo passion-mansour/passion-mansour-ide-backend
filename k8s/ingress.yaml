@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1beta1 # 쿠버네티스 API 버전
+kind: Ingress # 리소스 종류
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false" #Ingress에 대한 SSL/TLS 강제 리디렉션을 비활성화한다. (기본 값이 http 요청 시 https로 리다이렉트라서 비활성화)
+  labels:
+    app.kubernetes.io/managed-by: kargocd # 레이블 설정
+  name: passion-mansour-ide-backend # 레이블 이름
+  namespace: default # 기본 네임스페이스 사용
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              path: /  
+              pathType: Prefix # 접두사 /로 진입한 모든 요청을 설정한 서비스로 라우팅
+              serviceName: passion-mansour-ide-backend # 라우팅 타겟 서비스명
+              servicePort: 8080 # 라우팅 타겟 서비스 포트
