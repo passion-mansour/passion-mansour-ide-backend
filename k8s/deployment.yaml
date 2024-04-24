@@ -3,18 +3,28 @@ kind: Deployment
 metadata:
   name: passion-mansour-ide-backend
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: passion-mansour-ide-backend
-  template:
+  template: 
     metadata:
       labels:
         app: passion-mansour-ide-backend
     spec:
       containers:
         - name: passion-mansour-ide-backend
-          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_backend
-          imagePullPolicy: Always
+          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_7e1b52dfb1c6
           ports:
-            - containerPort: 7382
+            - containerPort: 8080
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: passion-mansour-ide-backend
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080 
+  selector:
+    app: passion-mansour-ide-backend

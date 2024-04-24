@@ -3,21 +3,35 @@ package com.mansour.ide.codeEditor.websocket;
 import com.mansour.ide.codeEditor.model.CodeSnippet;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @Slf4j
 @RequiredArgsConstructor
 public class WebSocketCodeEditor {
 
-    private final SimpMessagingTemplate messagingTemplate;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
-    @MessageMapping("/change")
-    public void handleCodeChange(CodeSnippet codeSnippet) {
-        log.info("Received snippet: {}", codeSnippet);
+    @MessageMapping("/code/change/{projectId}")
+    public void handleCodeChange(@DestinationVariable Long projectId, CodeSnippet codeSnippet) throws Exception{
 
-        messagingTemplate.convertAndSend("/topic/codeUpdate/" + codeSnippet.getId(), codeSnippet);
+        log.info("Handling code for project ID: {}, fileContent: {}", projectId, codeSnippet.getFileContent());
+
+        simpMessagingTemplate.convertAndSend("/topic/code/1", codeSnippet);
+
+        log.info("send {}", codeSnippet);
     }
+
+    @MessageExceptionHandler
+    @SendToUser("/queue/errors")
+    public String handleException(Throwable exception) {
+        // 사용자에게 에러 메시지를 보내기
+        return "An error occurred: " + exception.getMessage();
+    }
+
 }

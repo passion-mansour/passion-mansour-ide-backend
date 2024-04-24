@@ -77,6 +77,14 @@ public class MemberService {
         memberRepository.deleteByLoginId(loginId);
     }
 
+    public boolean isLoginIdAvailable(String loginId) {
+        return !memberRepository.existsByLoginId(loginId);
+    }
+
+    public boolean isNicknameAvailable(String nickName) {
+        return !memberRepository.existsByNickName(nickName);
+    }
+
     public void resetPassword(String loginId, String newPassword) {
         Member member = memberRepository.findByLoginId(loginId);
         if (member == null) {
@@ -106,11 +114,7 @@ public class MemberService {
         return new MemberDTO(member.getId(), member.getName(), member.getNickName(), member.getLoginId());
     }
 
-    public MemberDTO findMemberDetailsById(Long id) {
-        Member member = memberRepository.findById(id);
-        if (member == null) {
-            throw new UsernameNotFoundException("User not found.");
-        }
-        return new MemberDTO(member.getId(), member.getName(), member.getNickName(), member.getLoginId());
+    public void updateMemberDetails(Long memberId, String name, String nickName) {
+        memberRepository.updateMemberDetails(memberId, name, nickName);
     }
 }

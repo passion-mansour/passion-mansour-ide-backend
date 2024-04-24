@@ -1,25 +1,25 @@
-# Use OpenJDK 17 Slim as the base image
 FROM openjdk:17-slim as build
-WORKDIR /workspace/app
 
-# Copy necessary files for building the application
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
-COPY src src
+WORKDIR /app
 
-# Build the application, skipping tests
+COPY . .
+
+RUN mkdir -p /root/.gradle
+RUN echo "systemProp.http.proxyHost=krmp-proxy.9rum.cc\nsystemProp.http.proxyPort=3128\nsystemProp.https.proxyHost=krmp-proxy.9rum.cc\nsystemProp.https.proxyPort=3128" > /root/.gradle/gradle.properties
+RUN chmod +x gradlew
+
+
+
 RUN ./gradlew build -x test
 
-# Use OpenJDK 17 Slim for the runtime image
+# List output to verify
+RUN ls /app/build/libs/
+
 FROM openjdk:17-slim
 VOLUME /tmp
-# Copy the built JAR from the build stage
-COPY --from=build /workspace/app/build/libs/*.jar app.jar
+COPY --from=build /app/build/libs/*.jar app.jar
 
-# Set the entrypoint
+
+
 ENTRYPOINT ["java","-jar","/app.jar"]
-
-# Expose the application's port
-EXPOSE 7382/tcp
+EXPOSE 8080/tcp
