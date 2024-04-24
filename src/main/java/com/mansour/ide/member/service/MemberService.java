@@ -113,4 +113,8 @@ public class MemberService {
         }
         return new MemberDTO(member.getId(), member.getName(), member.getNickName(), member.getLoginId());
     }
+
+    public void updateMemberDetails(Long memberId, String name, String nickName) {
+        memberRepository.updateMemberDetails(memberId, name, nickName);
+    }
 }
