@@ -77,6 +77,14 @@ public class MemberService {
         memberRepository.deleteByLoginId(loginId);
     }
 
+    public boolean isLoginIdAvailable(String loginId) {
+        return !memberRepository.existsByLoginId(loginId);
+    }
+
+    public boolean isNicknameAvailable(String nickName) {
+        return !memberRepository.existsByNickName(nickName);
+    }
+
     public void resetPassword(String loginId, String newPassword) {
         Member member = memberRepository.findByLoginId(loginId);
         if (member == null) {

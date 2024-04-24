@@ -68,6 +68,26 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/check-loginId")
+    public ResponseEntity<?> checkLoginIdAvailability(@RequestParam String loginId) {
+        boolean isAvailable = memberService.isLoginIdAvailable(loginId);
+        if (isAvailable) {
+            return ResponseEntity.ok().body("Login ID is available.");
+        } else {
+            return ResponseEntity.badRequest().body("Login ID is already taken.");
+        }
+    }
+
+    @GetMapping("/check-nickname")
+    public ResponseEntity<?> checkNicknameAvailability(@RequestParam String nickName) {
+        boolean isAvailable = memberService.isNicknameAvailable(nickName);
+        if (isAvailable) {
+            return ResponseEntity.ok().body("Nickname is available.");
+        } else {
+            return ResponseEntity.badRequest().body("Nickname is already taken.");
+        }
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
