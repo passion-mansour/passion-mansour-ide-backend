@@ -27,4 +27,12 @@ public class FileResponse {
                 file.getUpdateDateTime()
         );
     }
+
+    @Override
+    public String toString() {
+        return "FileResponse{" +
+                ", content='" + content + '\'' +
+                ", language='" + language + '\'' +
+                '}';
+    }
 }
