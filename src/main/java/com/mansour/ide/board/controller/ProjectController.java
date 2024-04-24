@@ -4,11 +4,9 @@ import com.mansour.ide.board.dto.BoardPostRequest;
 import com.mansour.ide.board.dto.ProjectListResponse;
 import com.mansour.ide.board.dto.ProjectPostRequest;
 import com.mansour.ide.board.dto.ProjectResponse;
-import com.mansour.ide.board.model.Project;
 import com.mansour.ide.board.service.ProjectService;
-import com.mansour.ide.codeEditor.dto.FileResponse;
-import com.mansour.ide.codeEditor.model.File;
-import com.mansour.ide.codeEditor.service.CodeEditorService;
+import com.mansour.ide.member.dto.MemberDTO;
+import com.mansour.ide.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +20,17 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private MemberService memberService;
 
-    // 프로젝트 생성시 파일 생성 api로 포워딩, 이후 다시 get 프로젝트로 리다리렉션
+    // 프로젝트 생성시 파일 생성 api로 포워딩
     @PostMapping("/projects")
     public ModelAndView createProject(@RequestBody ProjectPostRequest projectPostRequest, HttpServletRequest request){
+        log.info("프로젝트 생성 시작");
+        MemberDTO host = memberService.findMemberDetailsById(projectPostRequest.getHostId());
         ModelAndView forwardApi = new ModelAndView("forward:/api/projects/" + projectService.create(projectPostRequest).getId() + "/create");
+        log.info("프로젝트 생성 완료");
+        log.info("호스트 닉네임 = {}", host.getNickName());
         forwardApi.addAllObjects(request.getParameterMap());
         return forwardApi;
     }
@@ -38,15 +42,15 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getById(projectId));
     }
 
-    // 종료상태 별 모든 프로젝트 조회
-    @PostMapping("/board")
+    // 프로젝트 전체 조회 - end 상태에 따른
+    @GetMapping("/board")
     public ResponseEntity<ProjectListResponse> getProjectsByEndState(@RequestBody BoardPostRequest boardPostRequest){
         log.info("isEnd status = {}", boardPostRequest.getIsEnd());
         return ResponseEntity.ok(projectService.getByEndStatus(boardPostRequest.getIsEnd()));
     }
 
     // 프로젝트 퇴장
-    @GetMapping("/projects/{projectId}/leave")
+    @PatchMapping("/projects/{projectId}/leave")
     public ResponseEntity<ProjectResponse> leaveProject(@PathVariable("projectId") Long projectId){
         return ResponseEntity.ok(projectService.updateEndStatus(projectId, true));
     }

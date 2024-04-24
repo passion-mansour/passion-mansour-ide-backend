@@ -37,9 +37,10 @@ public class CodeEditorService {
     public FileResponse save(FilePatchRequest filePatchRequest){
         Optional<File> file = fileRepository.findById(filePatchRequest.getId());
         log.info("파일 찾기 성공");
-        log.info("{}", file.get().getId());
-        log.info(file.get().getLanguage());
-        log.info(file.get().getContent());
+        log.info("file id = {}", file.get().getId());
+        log.info("file language = {}", file.get().getLanguage());
+        log.info("file content = {}", file.get().getContent());
+
         if(file.isEmpty()) {
             throw new IllegalArgumentException("File info is not found!");
         }
