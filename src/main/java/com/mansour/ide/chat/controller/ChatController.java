@@ -1,62 +1,56 @@
 package com.mansour.ide.chat.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mansour.ide.chat.model.ChatDto;
 import com.mansour.ide.chat.service.ChatService;
+import com.mansour.ide.member.model.Member;
+import com.mansour.ide.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class ChatController {
 
-    private final ObjectMapper mapper;
+    private final MemberRepository memberRepository;
     private final ChatService chatService;
-    private final SimpMessagingTemplate messagingTemplate;
 
-    // 채팅 메시지 처리
-    @MessageMapping("/chat")
-    public void handleChat(@RequestBody String payload) throws Exception {
-        log.info("Received message payload: {}", payload);
-        ChatDto chatDto = mapper.readValue(payload, ChatDto.class);
-        chatService.saveMessage(chatDto);
+    @MessageMapping("/chat/{projectId}")
+    @SendTo("/topic/chat/{projectId}")
+    public ChatDto sendMessage(@DestinationVariable Long projectId, ChatDto chatDto) {
 
-        Long projectId = chatDto.getProjectId();
-        String destination = "/topic/chat/1" ;
+        ChatDto savedMessage = chatService.saveMessage(projectId, chatDto);
+        log.info("savedMessage {}", savedMessage);
 
-        switch (chatDto.getMessageType()) {
-            case JOIN:
-                broadcastUserJoined(destination, chatDto.getSender());
-                break;
-            case LEAVE:
-                broadcastUserLeft(destination, chatDto.getSender());
-                break;
-            case TALK:
-                sendMessageToChatRoom(destination, chatDto);
-                break;
-        }
+        Member member = memberRepository.findById(chatDto.getUserId());
+        chatDto.setSender(member.getNickName());
+
+        return chatDto;
     }
 
-    private void sendMessageToChatRoom(String destination, ChatDto chatDto) {
-        messagingTemplate.convertAndSend(destination, chatDto);
+    @MessageMapping("/chat/join/{projectId}")
+    @SendTo("/topic/chat/{projectId}")
+    public ChatDto handleChatJoin(@DestinationVariable Long projectId, ChatDto chatDto) {
+
+        Member member = memberRepository.findById(chatDto.getUserId());
+
+        chatDto.setSender(member.getNickName());
+        chatDto.setMessage(chatDto.getSender() + "님이 입장하셨습니다.");
+        return chatDto;
     }
 
-    private void broadcastUserJoined(String destination, String username) {
-        ChatDto messageDto = new ChatDto();
-        messageDto.setMessage(username + " has joined the chat!");
-        messageDto.setMessageType(ChatDto.MessageType.JOIN);
-        messagingTemplate.convertAndSend(destination, messageDto);
-    }
+    @MessageMapping("/chat/leave/{projectId}")
+    @SendTo("/topic/chat/{projectId}")
+    public ChatDto handleChatLeave(@DestinationVariable Long projectId, ChatDto chatDto) {
 
-    private void broadcastUserLeft(String destination, String username) {
-        ChatDto messageDto = new ChatDto();
-        messageDto.setMessage(username + " has left the chat!");
-        messageDto.setMessageType(ChatDto.MessageType.LEAVE);
-        messagingTemplate.convertAndSend(destination, messageDto);
+        Member member = memberRepository.findById(chatDto.getUserId());
+
+        chatDto.setSender(member.getNickName());
+        chatDto.setMessage(chatDto.getSender() + "님이 퇴장하셨습니다.");
+        return chatDto;
     }
 }

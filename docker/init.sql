@@ -5,6 +5,10 @@ USE db;
 -- Create the admin user before granting privileges
 CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin';
 
+-- Grant privileges to the admin user
+GRANT ALL PRIVILEGES ON db.* TO 'admin'@'%';
+FLUSH PRIVILEGES;
+
 -- Projects 테이블 생성
 CREATE TABLE IF NOT EXISTS member (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -24,28 +28,17 @@ CREATE TABLE IF NOT EXISTS project (
     maxUser INT,
     isLock BOOLEAN,
     isEnd BOOLEAN,
-    createDt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    createdDt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     endDt TIMESTAMP,
     fileId BIGINT
 );
 
-CREATE TABLE IF NOT EXISTS participant (
-    participant_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    project_id BIGINT,
-    user_id BIGINT,
-    permission BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (project_id) REFERENCES project(id),
-    FOREIGN KEY (user_id) REFERENCES member(id)
-);
-
 CREATE TABLE IF NOT EXISTS message (
-    message_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    project_id BIGINT,
-    participant_id BIGINT,
+    messageId BIGINT AUTO_INCREMENT PRIMARY KEY,
+    projectId BIGINT,
+    userId BIGINT,
     message VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE,
-    FOREIGN KEY (participant_id) REFERENCES participant(participant_id) ON DELETE CASCADE
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS file (
@@ -53,10 +46,8 @@ CREATE TABLE IF NOT EXISTS file (
     name VARCHAR(255),
     content VARCHAR(255),
     language VARCHAR(255),
-    createDt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updateDt TIMESTAMP
+    createdDt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedDt TIMESTAMP
 );
 
--- Grant privileges to the admin user
-GRANT ALL PRIVILEGES ON db.* TO 'admin'@'%';
-FLUSH PRIVILEGES;
+

@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.ForwardedHeaderFilter;
 
 import com.mansour.ide.common.filters.JwtAuthenticationFilter;
 import com.mansour.ide.common.security.JwtTokenUtil;
@@ -39,8 +40,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/websocket/**", "/api/**").permitAll()
-                        .anyRequest().authenticated())
+                    .requestMatchers("/api-docs/**").permitAll()
+                    .requestMatchers("/api/authenticate").permitAll()
+                    .requestMatchers("/websocket/**", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**").permitAll()
+                    .anyRequest().authenticated())
                 .authenticationManager(authManager)
                 .addFilterBefore(new JwtAuthenticationFilter(authManager, jwtTokenUtil),
                         UsernamePasswordAuthenticationFilter.class)
@@ -48,6 +51,11 @@ public class SecurityConfig {
                         UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    ForwardedHeaderFilter forwardedHeaderFilter() {
+        return new ForwardedHeaderFilter();
     }
 
     @Autowired
