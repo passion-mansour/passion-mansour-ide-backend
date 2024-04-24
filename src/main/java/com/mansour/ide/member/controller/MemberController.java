@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,6 +69,26 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/check-loginId")
+    public ResponseEntity<?> checkLoginIdAvailability(@RequestParam String loginId) {
+        boolean isAvailable = memberService.isLoginIdAvailable(loginId);
+        if (isAvailable) {
+            return ResponseEntity.ok().body("Login ID is available.");
+        } else {
+            return ResponseEntity.badRequest().body("Login ID is already taken.");
+        }
+    }
+
+    @GetMapping("/check-nickname")
+    public ResponseEntity<?> checkNicknameAvailability(@RequestParam String nickName) {
+        boolean isAvailable = memberService.isNicknameAvailable(nickName);
+        if (isAvailable) {
+            return ResponseEntity.ok().body("Nickname is available.");
+        } else {
+            return ResponseEntity.badRequest().body("Nickname is already taken.");
+        }
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -93,6 +114,16 @@ public class MemberController {
     public ResponseEntity<?> logout() {
         SecurityContextHolder.clearContext(); // effectively logs the user out
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/update-profile")
+    public ResponseEntity<?> updateProfile(@RequestBody Member member) {
+        try {
+            memberService.updateMemberDetails(member.getId(), member.getName(), member.getNickName());
+            return ResponseEntity.ok().body("Profile updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update profile.");
+        }
     }
 
     @GetMapping("/my-page")

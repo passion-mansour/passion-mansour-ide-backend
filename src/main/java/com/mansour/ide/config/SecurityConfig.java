@@ -1,9 +1,5 @@
 package com.mansour.ide.config;
 
-import com.mansour.ide.common.security.JwtAuthenticationFilter;
-import com.mansour.ide.common.security.JwtTokenUtil;
-import com.mansour.ide.common.security.JwtTokenVerificationFilter;
-import com.mansour.ide.member.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +13,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 
+import com.mansour.ide.common.filters.JwtAuthenticationFilter;
+import com.mansour.ide.common.security.JwtTokenUtil;
+import com.mansour.ide.common.security.JwtTokenVerificationFilter;
+import com.mansour.ide.member.service.CustomUserDetailsService;
+
 @Configuration
 @EnableWebSecurity(debug = true)
 public class SecurityConfig {
-
+    //
     @Autowired
     private CustomUserDetailsService userDetailsService;
 

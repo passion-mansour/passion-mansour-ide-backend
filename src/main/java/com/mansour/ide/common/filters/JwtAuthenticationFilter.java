@@ -1,11 +1,8 @@
-package com.mansour.ide.common.security;
+package com.mansour.ide.common.filters;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mansour.ide.member.model.Member;
-
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,12 +11,16 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mansour.ide.common.security.JwtTokenUtil;
+import com.mansour.ide.member.model.Member;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
+    //
     private JwtTokenUtil jwtTokenUtil;
     private AuthenticationManager authenticationManager;
 
@@ -31,13 +32,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-        throws AuthenticationException {
+            throws AuthenticationException {
         try {
             Member member = new ObjectMapper().readValue(request.getInputStream(), Member.class);
             return authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                    member.getLoginId(),
-                    member.getPassword()));
+                    new UsernamePasswordAuthenticationToken(
+                            member.getLoginId(),
+                            member.getPassword()));
         } catch (IOException e) {
             throw new AuthenticationException("Unable to parse credentials", e) {
             };
@@ -46,7 +47,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication authResult) throws IOException {
+            Authentication authResult) throws IOException {
         UserDetails userDetails = (UserDetails) authResult.getPrincipal();
         String accessToken = jwtTokenUtil.generateAccessToken(userDetails);
         String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
