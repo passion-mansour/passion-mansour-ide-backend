@@ -5,10 +5,12 @@ import com.mansour.ide.member.dto.MemberDTO;
 import com.mansour.ide.member.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 
+@Slf4j
 @Data
 @AllArgsConstructor
 public class ProjectResponse {
@@ -26,9 +28,7 @@ public class ProjectResponse {
     private MemberDTO host;
 
     // Static Factory Method
-    public static ProjectResponse from(Project project){
-        MemberService memberService = new MemberService();
-
+    public static ProjectResponse from(Project project, MemberDTO host){
         return new ProjectResponse(
                 project.getId(),
                 project.getPw(),
@@ -40,7 +40,8 @@ public class ProjectResponse {
                 project.getCreateDateTime(),
                 project.getEndDateTime(),
                 project.getFileId(),
-                memberService.findMemberDetailsById(project.getHostId())
+                host
                 );
     }
+
 }

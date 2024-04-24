@@ -39,7 +39,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
             project.setIsEnd(rs.getBoolean("project.isEnd"));
 
             // 1. 문자열로 정재된 값 받기
-            String dateString = rs.getString("project.createDt").replace(' ', 'T');
+            String dateString = rs.getString("project.createdDt").replace(' ', 'T');
             // 2. 문자열 값을 LocalDateTime으로 변환
             LocalDateTime localDateTime = LocalDateTime.parse(dateString);
             // 3. LocalDateTime 값을 Timestamp로 변환
@@ -70,7 +70,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
         params.put("maxUser", project.getMaxUser());
         params.put("isLock", project.getIsLock());
         params.put("isEnd", project.getIsEnd());
-        params.put("createDt", Timestamp.from(Instant.now()));
+        params.put("createdDt", Timestamp.from(Instant.now()));
         params.put("endDt", Timestamp.from(Instant.now()));
         params.put("fileId", project.getFileId());
 

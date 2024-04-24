@@ -31,6 +31,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+	// 내부 도커 이미지 생성을 위한 의존성 추가
+	implementation 'com.github.docker-java:docker-java:3.2.10'
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.0'
+
 	// RabbitMQ를 위한 의존성 추가
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 

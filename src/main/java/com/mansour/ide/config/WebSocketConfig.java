@@ -23,7 +23,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/websocket")
             .setAllowedOrigins("http://localhost:3000",
-                "https://k314603b94e3fa.user-app.krampoline.com")
+                "https://k8bdd6f5dfdbfa.user-app.krampoline.com/")
             .withSockJS();
     }
 
@@ -34,7 +34,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                     .allowedOriginPatterns("http://localhost:3000",
-                        "https://k314603b94e3fa.user-app.krampoline.com")  // 특정 패턴 사용
+                        "https://k8bdd6f5dfdbfa.user-app.krampoline.com/")  // 특정 패턴 사용
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowCredentials(true)
                     .maxAge(3600);
