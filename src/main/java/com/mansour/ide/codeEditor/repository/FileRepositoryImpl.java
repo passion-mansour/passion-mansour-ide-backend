@@ -34,11 +34,11 @@ public class FileRepositoryImpl implements FileRepository{
             file.setContent(rs.getString("file.content"));
             file.setLanguage(rs.getString("file.language"));
 
-            String dateString = rs.getString("file.createDt").replace(' ', 'T');
+            String dateString = rs.getString("file.createdDt").replace(' ', 'T');
             LocalDateTime localDateTime = LocalDateTime.parse(dateString);
             file.setCreateDateTime(Timestamp.valueOf(localDateTime));
 
-            dateString = rs.getString("file.updateDt").replace(' ', 'T');
+            dateString = rs.getString("file.updatedDt").replace(' ', 'T');
             localDateTime = LocalDateTime.parse(dateString);
             file.setUpdateDateTime(Timestamp.valueOf(localDateTime));
 
@@ -55,14 +55,14 @@ public class FileRepositoryImpl implements FileRepository{
         log.info("file content save = {}", file.getContent());
         log.info("file language save = {}", file.getLanguage());
         log.info("file createDt save = {}", file.getCreateDateTime());
-        log.info("file updateDt save = {}", file.getUpdateDateTime());
+        log.info("file updatedDt save = {}", file.getUpdateDateTime());
 
         Map<String, Object> params = new HashMap<>();
         params.put("name", file.getName());
         params.put("content", file.getContent());
         params.put("language", file.getLanguage());
-        params.put("createDt", Timestamp.from(Instant.now()));
-        params.put("updateDt", Timestamp.from(Instant.now()));
+        params.put("createdDt", Timestamp.from(Instant.now()));
+        params.put("updatedDt", Timestamp.from(Instant.now()));
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(params));
         file.setId(key.longValue());
@@ -72,7 +72,7 @@ public class FileRepositoryImpl implements FileRepository{
 
     @Override
     public File update(File file) {
-        String sql = "UPDATE file SET language = ?, content = ?, updateDt = CURRENT_TIMESTAMP WHERE id = ?";
+        String sql = "UPDATE file SET language = ?, content = ?, updatedDt = CURRENT_TIMESTAMP WHERE id = ?";
         jdbcTemplate.update(sql, file.getLanguage(), file.getContent(), file.getId());
 
         return file;
