@@ -1,5 +1,6 @@
 package com.mansour.ide.codeEditor.controller;
 
+import com.mansour.ide.board.dto.ProjectResponse;
 import com.mansour.ide.board.service.ProjectService;
 import com.mansour.ide.codeEditor.dto.FilePatchRequest;
 import com.mansour.ide.codeEditor.dto.FileResponse;
@@ -21,18 +22,11 @@ public class CodeEditorController {
     private ProjectService projectService;
     @Autowired
     private CodeEditorService codeEditorService;
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @PostMapping("/{projectId}/create")
-    public
-    RedirectView saveFile(@PathVariable("projectId") Long projectId, RedirectAttributes redirectAttributes){
+    public ResponseEntity<ProjectResponse> saveFile(@PathVariable("projectId") Long projectId){
         projectService.updateFileId(projectId, codeEditorService.create().getId());
-
-        String redirectApi = "redirect:/api/projects/" + projectId + "/get";
-        log.info("redirect api : {}", redirectApi);
-
-        redirectAttributes.addFlashAttribute("success message", "프로젝트가 성공적으로 생성되었습니다.");
-        return new RedirectView(redirectApi);
+        return ResponseEntity.ok(projectService.getById(projectId));
     }
 
     @PatchMapping("/{projectId}/save")
