@@ -25,6 +25,7 @@ public class ChatController {
 
 //        ChatDto savedMessage = chatService.saveMessage(projectId, chatDto);
 //        log.info("savedMessage {}", savedMessage);
+        log.info("chatDto {}", chatDto);
 
         Member member = memberRepository.findById(chatDto.getUserId());
         chatDto.setSender(member.getNickName());
