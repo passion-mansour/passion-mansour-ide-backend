@@ -23,8 +23,8 @@ public class ChatController {
     @SendTo("/topic/chat/{projectId}")
     public ChatDto sendMessage(@DestinationVariable Long projectId, ChatDto chatDto) {
 
-        ChatDto savedMessage = chatService.saveMessage(projectId, chatDto);
-        log.info("savedMessage {}", savedMessage);
+//        ChatDto savedMessage = chatService.saveMessage(projectId, chatDto);
+//        log.info("savedMessage {}", savedMessage);
 
         Member member = memberRepository.findById(chatDto.getUserId());
         chatDto.setSender(member.getNickName());
