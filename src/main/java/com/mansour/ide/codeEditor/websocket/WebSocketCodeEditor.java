@@ -22,9 +22,11 @@ public class WebSocketCodeEditor {
 
         log.info("Handling code for project ID: {}, fileContent: {}", projectId, codeSnippet.getFileContent());
 
-        simpMessagingTemplate.convertAndSend("/topic/code/1", codeSnippet);
+        String topic = "/topic/code/" + projectId;
+        simpMessagingTemplate.convertAndSend(topic, codeSnippet);
 
         log.info("send {}", codeSnippet);
+
     }
 
     @MessageExceptionHandler
