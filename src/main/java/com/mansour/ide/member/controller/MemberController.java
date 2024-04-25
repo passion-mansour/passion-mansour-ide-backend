@@ -2,6 +2,7 @@ package com.mansour.ide.member.controller;
 
 import java.util.Map;
 
+import com.mansour.ide.member.dto.LoginDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -138,4 +139,13 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    @PostMapping("/login1")
+    public ResponseEntity<MemberTokensDTO> login(@RequestBody LoginDTO loginDTO) {
+
+        MemberTokensDTO logined = memberService.login(loginDTO);
+
+        return ResponseEntity.ok(logined);
+    }
+
 }
