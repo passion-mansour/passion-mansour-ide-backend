@@ -1,6 +1,7 @@
 package com.mansour.ide.member.service;
 
 import com.mansour.ide.common.security.JwtTokenUtil;
+import com.mansour.ide.member.dto.LoginDTO;
 import com.mansour.ide.member.dto.MemberDTO;
 import com.mansour.ide.member.dto.MemberTokensDTO;
 import com.mansour.ide.member.model.Member;
@@ -124,5 +125,21 @@ public class MemberService {
 
     public void updateMemberDetails(Long memberId, String name, String nickName) {
         memberRepository.updateMemberDetails(memberId, name, nickName);
+    }
+
+    public MemberTokensDTO login(LoginDTO loginDTO) {
+        Member member = memberRepository.findByLoginId(loginDTO.getLoginId());
+        if (!passwordEncoder.matches(loginDTO.getPassword(), member.getPassword())) {
+            throw new IllegalArgumentException("잘못된 비밀번호");
+        }
+
+        MemberDTO memberDTO = convertToMemberDTO(member);
+
+        // 토큰 생성
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(member.getLoginId());
+        final String accessToken = jwtTokenUtil.generateAccessToken(userDetails);
+        final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
+
+        return new MemberTokensDTO(memberDTO, accessToken, refreshToken);
     }
 }
