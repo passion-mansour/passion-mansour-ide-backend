@@ -114,8 +114,8 @@ public class MemberService {
         return new MemberDTO(member.getId(), member.getName(), member.getNickName(), member.getLoginId());
     }
 
-    public MemberDTO findMemberDetailsById(Long loginId) {
-        Member member = memberRepository.findById(loginId);
+    public MemberDTO findMemberDetailsById(Long id) {
+        Member member = memberRepository.findById(id);
         if (member == null) {
             throw new UsernameNotFoundException("User not found.");
         }

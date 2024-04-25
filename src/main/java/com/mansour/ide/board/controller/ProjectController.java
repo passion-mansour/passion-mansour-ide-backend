@@ -43,7 +43,7 @@ public class ProjectController {
     }
 
     // 프로젝트 전체 조회 - end 상태에 따른
-    @GetMapping("/board")
+    @PostMapping("/board")
     public ResponseEntity<ProjectListResponse> getProjectsByEndState(@RequestBody BoardPostRequest boardPostRequest){
         log.info("isEnd status = {}", boardPostRequest.getIsEnd());
         return ResponseEntity.ok(projectService.getByEndStatus(boardPostRequest.getIsEnd()));

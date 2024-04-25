@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,7 +57,28 @@ public class ProjectService {
 
     // 종료 여부에 따른 프로젝트 List 조회
     public ProjectListResponse getByEndStatus(boolean isEnd){
-        return new ProjectListResponse(projectRepository.getByEndStatus(isEnd));
+        List<Project> projects = projectRepository.getByEndStatus(isEnd);
+        List<ProjectResponse> projectsResponseList = new ArrayList<ProjectResponse>();
+
+        for (Project project : projects) {
+            MemberDTO host = memberService.findMemberDetailsById(project.getHostId());
+            projectsResponseList.add(
+                    new ProjectResponse(
+                            project.getId(),
+                            project.getPw(),
+                            project.getTitle(),
+                            project.getTagLanguage(),
+                            project.getMaxUser(),
+                            project.getIsLock(),
+                            project.getIsEnd(),
+                            project.getCreateDateTime(),
+                            project.getEndDateTime(),
+                            project.getFileId(),
+                            host
+                    )
+            );
+        }
+        return new ProjectListResponse(projectsResponseList);
     }
 
     // update

@@ -1,5 +1,6 @@
 package com.mansour.ide.board.repository;
 
+import com.mansour.ide.board.dto.ProjectListResponse;
 import com.mansour.ide.board.model.Project;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
