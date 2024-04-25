@@ -13,6 +13,7 @@ public class ChatDto {
 
     @JsonIgnore
     private Long chatMessageId; // 메시지 id
+
     private Long userId; // 보내는 유저 id
     @JsonIgnore
     private Long projectId; // 프로젝트 id
