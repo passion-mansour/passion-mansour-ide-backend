@@ -35,7 +35,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 registry.addMapping("/**")
                     .allowedOriginPatterns("http://localhost:3000",
                         "https://k8bdd6f5dfdbfa.user-app.krampoline.com/")  // 특정 패턴 사용
-                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                     .allowCredentials(true)
                     .maxAge(3600);
             }
