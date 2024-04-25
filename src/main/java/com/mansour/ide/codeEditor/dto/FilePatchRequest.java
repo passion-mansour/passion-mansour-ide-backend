@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 public class FilePatchRequest {
     private Long id;
     private String language;
-    private String fileContent;
+    private String content;
 }
