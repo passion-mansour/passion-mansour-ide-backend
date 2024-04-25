@@ -46,7 +46,7 @@ public class CodeEditorService {
         }
 
         file.get().setLanguage(filePatchRequest.getLanguage());
-        file.get().setContent(filePatchRequest.getFileContent());
+        file.get().setContent(filePatchRequest.getContent());
         file.get().setUpdateDateTime(Timestamp.from(Instant.now()));
 
         log.info("파일 업데이트 시작");
