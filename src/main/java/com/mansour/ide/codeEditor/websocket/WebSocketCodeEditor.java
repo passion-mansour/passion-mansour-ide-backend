@@ -28,9 +28,9 @@ public class WebSocketCodeEditor {
 //    @SendTo("/topic/code/{projectId}")
     public void handleCodeChange(@DestinationVariable Long projectId, CodeSnippet codeSnippet) throws Exception {
 
-        log.info("Handling code for project ID: {}, content: {}", projectId, codeSnippet.getContent());
+        log.info("Handling code for project ID: {}, fileContent: {}", projectId, codeSnippet.getFileContent());
 
-        String destination = "/topic/chat/" + projectId;
+        String destination = "/topic/code/" + projectId;
 
         log.info("send {}", codeSnippet);
         simpMessagingTemplate.convertAndSend(destination, codeSnippet);
