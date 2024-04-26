@@ -1,5 +1,6 @@
 package com.mansour.ide.config;
 
+import com.mansour.ide.codeEditor.model.CodeResult;
 import com.mansour.ide.rabbitmq.RabbitMqProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,37 +14,64 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
 public class RabbitMQConfig {
     private final RabbitMqProperties rabbitMqProperties;
 
-    @Value("${rabbitmq.queue.name}")
-    private String QUEUE_NAME;
-
-    @Value("${rabbitmq.exchange.name}")
-    private String EXCHANGE_NAME;
-
-    @Value("${rabbitmq.routing.key}")
-    private String ROUTING_KEY;
+    @Bean
+    public CodeResult codeResult() {
+        // 기본값 또는 설정으로 초기화
+        return new CodeResult(false, null, new ArrayList<>());
+    }
 
     @Bean
-    public Queue queue() {
-        log.info("QUEUE_NAME: {}", QUEUE_NAME);
-        log.info("EXCHANGE_NAME: {}", EXCHANGE_NAME);
-        log.info("ROUTING_KEY: {}", ROUTING_KEY);
-        return new Queue(QUEUE_NAME);
+    public DirectExchange directExchange() {
+        return new DirectExchange("languageExchange");
     }
 
-    @Bean // 지정된 Exchange 이름으로 Direct Exchange Bean 을 생성
-    public DirectExchange exchange() {
-        return new DirectExchange(EXCHANGE_NAME);
+    @Bean
+    public Queue javaQueue() {
+        return new Queue("javaQueue", true);
     }
 
-    @Bean // Queue 와 Exchange 을 Binding 하고, Routing Key 을 이용하여 Binding Bean 생성
-    public Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+    @Bean
+    public Queue pythonQueue() {
+        return new Queue("pythonQueue", true);
+    }
+
+    @Bean
+    public Queue javascriptQueue() {
+        return new Queue("javascriptQueue", true);
+    }
+
+    @Bean
+    public Binding bindingJava(DirectExchange directExchange, Queue javaQueue) {
+        return BindingBuilder.bind(javaQueue).to(directExchange).with("java");
+    }
+
+    @Bean
+    public Binding bindingPython(DirectExchange directExchange, Queue pythonQueue) {
+        return BindingBuilder.bind(pythonQueue).to(directExchange).with("python");
+    }
+
+    @Bean
+    public Binding bindingJavascript(DirectExchange directExchange, Queue pythonQueue) {
+        return BindingBuilder.bind(pythonQueue).to(directExchange).with("javascript");
+    }
+
+    @Bean // RabbitMQ 연동을 위한 ConnectionFactory 빈을 생성하여 반환
+    public CachingConnectionFactory connectionFactory() {
+        // Connection 및 Channel을 캐싱하여 재사용
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+        connectionFactory.setHost(rabbitMqProperties.getHost());
+        connectionFactory.setPort(rabbitMqProperties.getPort());
+        connectionFactory.setUsername(rabbitMqProperties.getUsername());
+        connectionFactory.setPassword(rabbitMqProperties.getPassword());
+        return connectionFactory;
     }
 
     @Bean // ConnectionFactory 로 연결 후 실제 작업을 위한 Template
@@ -56,15 +84,5 @@ public class RabbitMQConfig {
     @Bean // 직렬화(메세지를 JSON 으로 변환하는 Message Converter)
     public MessageConverter jackson2JsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
-    }
-
-    @Bean // RabbitMQ 연동을 위한 ConnectionFactory 빈을 생성하여 반환
-    public CachingConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
-        connectionFactory.setHost(rabbitMqProperties.getHost());
-        connectionFactory.setPort(rabbitMqProperties.getPort());
-        connectionFactory.setUsername(rabbitMqProperties.getUsername());
-        connectionFactory.setPassword(rabbitMqProperties.getPassword());
-        return connectionFactory;
     }
 }

@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class FilePatchRequest {
+public class FileRunRequest {
     private Long id;
     private String language;
     private String content;

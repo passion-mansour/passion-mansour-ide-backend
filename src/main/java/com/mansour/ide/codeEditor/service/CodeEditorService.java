@@ -1,6 +1,6 @@
 package com.mansour.ide.codeEditor.service;
 
-import com.mansour.ide.codeEditor.dto.FilePatchRequest;
+import com.mansour.ide.codeEditor.dto.FileRunRequest;
 import com.mansour.ide.codeEditor.dto.FileResponse;
 import com.mansour.ide.codeEditor.model.File;
 import com.mansour.ide.codeEditor.repository.FileRepositoryImpl;
@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Slf4j
@@ -34,7 +32,7 @@ public class CodeEditorService {
     }
 
     @Transactional
-    public FileResponse save(FilePatchRequest filePatchRequest){
+    public FileResponse save(FileRunRequest filePatchRequest){
         Optional<File> file = fileRepository.findById(filePatchRequest.getId());
         log.info("파일 찾기 성공");
         log.info("file id = {}", file.get().getId());
@@ -60,9 +58,5 @@ public class CodeEditorService {
         }
 
         return FileResponse.from(file.get());
-    }
-
-    public void run(){
-        // TODO: run 구현
     }
 }

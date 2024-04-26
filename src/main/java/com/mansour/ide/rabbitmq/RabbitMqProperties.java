@@ -14,7 +14,4 @@ public class RabbitMqProperties {
     private int port;
     private String username;
     private String password;
-
-    public RabbitMqProperties() {
-    }
 }
