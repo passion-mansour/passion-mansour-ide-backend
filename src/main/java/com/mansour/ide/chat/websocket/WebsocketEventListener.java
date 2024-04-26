@@ -19,6 +19,7 @@ public class WebsocketEventListener {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
+    @Component
     public class UserCounter {
         private ConcurrentHashMap<String, Integer> userCounts = new ConcurrentHashMap<>();
 
