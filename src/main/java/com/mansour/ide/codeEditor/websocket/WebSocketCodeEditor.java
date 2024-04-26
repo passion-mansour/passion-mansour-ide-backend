@@ -21,7 +21,7 @@ public class WebSocketCodeEditor {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final ProjectService projectService;
 
-    @MessageMapping("/chat/{projectId}")
+    @MessageMapping("/code/change/{projectId}")
     @SendTo("/topic/code/{projectId}")
     public CodeSnippet handleCodeChange(@DestinationVariable Long projectId, CodeSnippet codeSnippet) throws Exception {
 
