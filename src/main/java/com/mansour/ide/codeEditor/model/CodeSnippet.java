@@ -8,5 +8,5 @@ import lombok.Data;
 public class CodeSnippet {
     private Long projectId;
     private String type;
-    private String content;
+    private String fileContent;
 }

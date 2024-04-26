@@ -28,9 +28,9 @@ public class WebSocketCodeEditor {
 //    @SendTo("/topic/code/{projectId}")
     public void handleCodeChange(@DestinationVariable Long projectId, CodeSnippet codeSnippet) throws Exception {
 
-        log.info("Handling code for project ID: {}, content: {}", projectId, codeSnippet.getContent());
+        log.info("Handling code for project ID: {}, fileContent: {}", projectId, codeSnippet.getFileContent());
 
-        String destination = "/topic/chat/" + projectId;
+        String destination = "/topic/code/" + projectId;
 
         log.info("send {}", codeSnippet);
         simpMessagingTemplate.convertAndSend(destination, codeSnippet);
@@ -38,9 +38,9 @@ public class WebSocketCodeEditor {
 
     @MessageMapping("/project/join/{projectId}")
     @SendTo("/topic/code/{projectId}")
-    public ProjectDto handleUserJoin(@DestinationVariable Long projectId, @Payload ProjectDto projectDto, SimpMessagingTemplate simpMessagingTemplate) {
+    public ProjectDto handleUserJoin(@DestinationVariable Long projectId, @Payload ProjectDto projectDto) {
 
-        String destination = "/topic/chat/" + projectId;
+        String destination = "/topic/code/" + projectId;
 
         return projectDto;
     }
@@ -49,7 +49,7 @@ public class WebSocketCodeEditor {
     @SendTo("/topic/code/{projectId}")
     public ProjectDto handleUserExit(@DestinationVariable Long projectId, @Payload ProjectDto projectDto) {
 
-        String destination = "/topic/chat/" + projectId;
+        String destination = "/topic/code/" + projectId;
 
         if (projectDto.getIsOwn().equals(true)) {
             projectDto.setMessage("호스트가 연결을 종료했습니다,");
