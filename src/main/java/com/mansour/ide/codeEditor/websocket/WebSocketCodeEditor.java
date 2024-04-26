@@ -53,7 +53,7 @@ public class WebSocketCodeEditor {
             projectDto.setMessage("호스트가 연결을 종료했습니다,");
             projectService.updateEndStatus(projectId, true);
         }
-
+        projectDto.setType("FORCE_DISCONNECT");
         projectDto.setIsEnd(true);
 
         return projectDto;
