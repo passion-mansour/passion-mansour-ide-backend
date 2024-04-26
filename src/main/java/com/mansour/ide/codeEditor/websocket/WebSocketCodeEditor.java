@@ -25,13 +25,15 @@ public class WebSocketCodeEditor {
     private final ProjectService projectService;
 
     @MessageMapping("/code/change/{projectId}")
-    @SendTo("/topic/code/{projectId}")
-    public CodeSnippet handleCodeChange(@DestinationVariable Long projectId, CodeSnippet codeSnippet) throws Exception {
+//    @SendTo("/topic/code/{projectId}")
+    public void handleCodeChange(@DestinationVariable Long projectId, CodeSnippet codeSnippet) throws Exception {
 
-        log.info("Handling code for project ID: {}, fileContent: {}", projectId, codeSnippet.getFileContent());
+        log.info("Handling code for project ID: {}, content: {}", projectId, codeSnippet.getContent());
+
+        String destination = "/topic/chat/" + projectId;
 
         log.info("send {}", codeSnippet);
-        return codeSnippet;
+        simpMessagingTemplate.convertAndSend(destination, codeSnippet);
     }
 
     @MessageMapping("/project/join/{projectId}")
