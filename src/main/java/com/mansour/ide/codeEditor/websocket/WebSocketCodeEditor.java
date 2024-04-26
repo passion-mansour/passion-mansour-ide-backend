@@ -40,7 +40,7 @@ public class WebSocketCodeEditor {
     @SendTo("/topic/code/{projectId}")
     public ProjectDto handleUserJoin(@DestinationVariable Long projectId, @Payload ProjectDto projectDto, SimpMessagingTemplate simpMessagingTemplate) {
 
-        String destination = "/topic/chat/" + projectId;
+        String destination = "/topic/code/" + projectId;
 
         return projectDto;
     }
@@ -49,7 +49,7 @@ public class WebSocketCodeEditor {
     @SendTo("/topic/code/{projectId}")
     public ProjectDto handleUserExit(@DestinationVariable Long projectId, @Payload ProjectDto projectDto) {
 
-        String destination = "/topic/chat/" + projectId;
+        String destination = "/topic/code/" + projectId;
 
         if (projectDto.getIsOwn().equals(true)) {
             projectDto.setMessage("호스트가 연결을 종료했습니다,");
