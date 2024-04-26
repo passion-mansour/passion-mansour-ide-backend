@@ -46,7 +46,9 @@ public class WebSocketCodeEditor {
 
         String destination = "/topic/chat/" + projectId;
 
-        projectDto.setMessage("호스트가 연결을 종료했습니다,");
+        if (projectDto.getIsOwn().equals(true)) {
+            projectDto.setMessage("호스트가 연결을 종료했습니다,");
+        }
 
         projectService.updateEndStatus(projectId, true);
         return projectDto;
