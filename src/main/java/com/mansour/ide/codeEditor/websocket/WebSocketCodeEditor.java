@@ -38,7 +38,7 @@ public class WebSocketCodeEditor {
 
     @MessageMapping("/project/join/{projectId}")
     @SendTo("/topic/code/{projectId}")
-    public ProjectDto handleUserJoin(@DestinationVariable Long projectId, @Payload ProjectDto projectDto, SimpMessagingTemplate simpMessagingTemplate) {
+    public ProjectDto handleUserJoin(@DestinationVariable Long projectId, @Payload ProjectDto projectDto) {
 
         String destination = "/topic/code/" + projectId;
 
