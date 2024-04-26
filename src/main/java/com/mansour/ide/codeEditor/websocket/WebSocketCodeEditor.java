@@ -11,7 +11,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collections;
 
 @RestController
 @Slf4j
@@ -42,15 +45,17 @@ public class WebSocketCodeEditor {
 
     @MessageMapping("/project/leave/{projectId}")
     @SendTo("/topic/code/{projectId}")
-    public ProjectDto handleUserExit(@DestinationVariable Long projectId, ProjectDto projectDto) {
+    public ProjectDto handleUserExit(@DestinationVariable Long projectId, @Payload ProjectDto projectDto) {
 
         String destination = "/topic/chat/" + projectId;
 
         if (projectDto.getIsOwn().equals(true)) {
             projectDto.setMessage("호스트가 연결을 종료했습니다,");
+            projectService.updateEndStatus(projectId, true);
         }
 
-        projectService.updateEndStatus(projectId, true);
+        projectDto.setIsEnd(true);
+
         return projectDto;
     }
 }

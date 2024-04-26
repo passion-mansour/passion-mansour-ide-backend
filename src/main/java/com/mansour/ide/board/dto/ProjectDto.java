@@ -18,5 +18,7 @@ public class ProjectDto {
     private Boolean isOwn;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean isEnd;
 
 }
